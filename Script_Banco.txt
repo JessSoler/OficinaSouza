@@ -1,0 +1,136 @@
+﻿USE [master]
+GO
+
+create DATABASE [OficinaSouza]
+GO
+USE [OficinaSouza]
+GO
+/****** Object:  Table [dbo].[Categorias]    Script Date: 25/04/2022 22:45:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Categorias](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Categorias] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Produtos]    Script Date: 25/04/2022 22:45:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Produtos](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[IDCategoria] [int] NOT NULL,
+	[Nome] [varchar](150) NOT NULL,
+	[Marca] [varchar](50) NOT NULL,
+	[Quantidade] [int] NOT NULL,
+	[ValorUnitario] [decimal](18, 2) NOT NULL,
+	[ValorTotal]  AS ([Quantidade]*[ValorUnitario]),
+ CONSTRAINT [PK_Produtos] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Usuarios]    Script Date: 25/04/2022 22:45:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Usuarios](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Email] [varchar](50) NOT NULL,
+	[Senha] [varchar](50) NOT NULL,
+	[AcessaCategorias] [bit] NOT NULL,
+	[AcessaProdutos] [bit] NOT NULL,
+	[AcessaUsuarios] [bit] NOT NULL,
+	[Ativo] [bit] NOT NULL CONSTRAINT [DF_Usuarios_Ativo]  DEFAULT ((1)),
+ CONSTRAINT [PK_Usuarios] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  View [dbo].[vwListarProdutos]    Script Date: 25/04/2022 22:45:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE view [dbo].[vwListarProdutos]
+as
+	select
+	p.ID,
+	p.IDCategoria,
+	c.Nome as NomeCategoria,
+	p.Nome,
+	p.Marca,
+	p.Quantidade,
+	p.ValorUnitario,
+	p.ValorTotal
+	from Produtos p
+	inner join Categorias c on c.ID = p .IDCategoria
+GO
+SET IDENTITY_INSERT [dbo].[Categorias] ON 
+
+GO
+INSERT [dbo].[Categorias] ([ID], [Nome]) VALUES (1, N'Pneu')
+GO
+INSERT [dbo].[Categorias] ([ID], [Nome]) VALUES (2, N'Oleo')
+GO
+INSERT [dbo].[Categorias] ([ID], [Nome]) VALUES (3, N'Peças')
+GO
+SET IDENTITY_INSERT [dbo].[Categorias] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Produtos] ON 
+
+GO
+INSERT [dbo].[Produtos] ([ID], [IDCategoria], [Nome], [Marca], [Quantidade], [ValorUnitario]) VALUES (2, 3, N'Para Motor', N'Mobil Super', 5, CAST(79.90 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Produtos] ([ID], [IDCategoria], [Nome], [Marca], [Quantidade], [ValorUnitario]) VALUES (3, 3, N'cabeçotes', N'Toyota', 1, CAST(10000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Produtos] ([ID], [IDCategoria], [Nome], [Marca], [Quantidade], [ValorUnitario]) VALUES (1, 3, N'Pneu Aro 34', N'Superguider', 24, CAST(4000.00 AS Decimal(18, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[Produtos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Usuarios] ON 
+
+GO
+INSERT [dbo].[Usuarios] ([ID], [Nome], [Email], [Senha], [AcessaCategorias], [AcessaProdutos], [AcessaUsuarios], [Ativo]) VALUES (1, N'Jessica Soler (Admin)', N'jessica@gmail.com', N'20062001', 1, 1, 1, 1)
+GO
+INSERT [dbo].[Usuarios] ([ID], [Nome], [Email], [Senha], [AcessaCategorias], [AcessaProdutos], [AcessaUsuarios], [Ativo]) VALUES (2, N'Ana', N'ana@gmail.com', N'1234', 0, 0, 0, 1)
+GO
+INSERT [dbo].[Usuarios] ([ID], [Nome], [Email], [Senha], [AcessaCategorias], [AcessaProdutos], [AcessaUsuarios], [Ativo]) VALUES (3, N'Paulo Tadeu', N'paulo@gmail.com', N'1234', 1, 1, 1, 0)
+GO
+SET IDENTITY_INSERT [dbo].[Usuarios] OFF
+GO
+ALTER TABLE [dbo].[Produtos]  WITH CHECK ADD  CONSTRAINT [FK_Produtos_Categorias] FOREIGN KEY([IDCategoria])
+REFERENCES [dbo].[Categorias] ([ID])
+GO
+ALTER TABLE [dbo].[Produtos] CHECK CONSTRAINT [FK_Produtos_Categorias]
+GO
+USE [master]
+GO
+ALTER DATABASE [OficinaSouza] SET  READ_WRITE 
+GO
