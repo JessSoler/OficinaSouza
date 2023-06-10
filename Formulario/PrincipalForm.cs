@@ -93,7 +93,7 @@ namespace Oficina
 
         private void categoriasToolStripButton_Click(object sender, EventArgs e)
         {
-
+            new CategoriaForm().ShowDialog();
         }
 
         private void PrincipalForm_Load(object sender, EventArgs e)

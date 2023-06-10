@@ -35,6 +35,7 @@
             this.excluirProdutoButton = new System.Windows.Forms.Button();
             this.alterarButton = new System.Windows.Forms.Button();
             this.novaButton = new System.Windows.Forms.Button();
+            this.Categorialabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.categoriaDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,7 +93,7 @@
             // 
             // novaButton
             // 
-            this.novaButton.Location = new System.Drawing.Point(578, 398);
+            this.novaButton.Location = new System.Drawing.Point(569, 398);
             this.novaButton.Margin = new System.Windows.Forms.Padding(4);
             this.novaButton.Name = "novaButton";
             this.novaButton.Size = new System.Drawing.Size(100, 28);
@@ -101,11 +102,22 @@
             this.novaButton.UseVisualStyleBackColor = true;
             this.novaButton.Click += new System.EventHandler(this.novoButton_Click);
             // 
+            // Categorialabel
+            // 
+            this.Categorialabel.AutoSize = true;
+            this.Categorialabel.Location = new System.Drawing.Point(6, 404);
+            this.Categorialabel.Name = "Categorialabel";
+            this.Categorialabel.Size = new System.Drawing.Size(69, 16);
+            this.Categorialabel.TabIndex = 21;
+            this.Categorialabel.Text = "Categoria ";
+            this.Categorialabel.Click += new System.EventHandler(this.label1_Click);
+            // 
             // CategoriaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Categorialabel);
             this.Controls.Add(this.novaButton);
             this.Controls.Add(this.alterarButton);
             this.Controls.Add(this.excluirProdutoButton);
@@ -117,6 +129,7 @@
             this.Text = "Categoria";
             ((System.ComponentModel.ISupportInitialize)(this.categoriaDataGridView)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -128,5 +141,6 @@
         private System.Windows.Forms.Button excluirProdutoButton;
         private System.Windows.Forms.Button alterarButton;
         private System.Windows.Forms.Button novaButton;
+        private System.Windows.Forms.Label Categorialabel;
     }
 }
